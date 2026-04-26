@@ -114,14 +114,33 @@ export function runAstar(matrix, source, target, positions) {
 }
 
 
+// function reconstructPath(prev, source, target, costArr) {
+//   if (costArr[target] === Infinity) return []
+//   const path = []
+//   let cur = target
+//   path.unshift(cur)
+//   // const path = []
+//   // let cur = target
+//   // while (cur !== null) {
+//   //   path.unshift(cur)
+//   //   if (cur === source) break
+//   //   cur = prev[cur]
+//   // }
+//   // return path[0] === source ? path : []
+// }
+
 function reconstructPath(prev, source, target, costArr) {
   if (costArr[target] === Infinity) return []
-  const path = []
-  let cur = target
-  while (cur !== null) {
-    path.unshift(cur)
-    if (cur === source) break
-    cur = prev[cur]
+
+  function buildPath(node) {
+    if (node === null) return []
+    if (node === source) return [source]
+    console.log("prev ->", prev, "node->", node,"source->", source,)
+    const path = buildPath(prev[node])
+
+    path.push(node)
+    return path
   }
-  return path[0] === source ? path : []
+
+  return buildPath(target)
 }
